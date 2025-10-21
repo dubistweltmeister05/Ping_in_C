@@ -38,18 +38,33 @@ typedef unsigned char int8;
 typedef unsigned short int int16;
 typedef unsigned int int32;
 
+enum e_type{
+	unassigned,
+	echo,
+	echoreply,
+};
+typedef enum e_type type;
 
-int main(int,char**);
-
-struct s_icmp{
+struct s_rawicmp{
 	int8 type;
 	int8 code;
 	int16 checksum;
 	int8 data[];
-};
+}packed;
+
+struct s_icmp{
+	type kind;
+	int16 size;
+	int8 *data;
+}packed;
 
 typedef struct s_icmp icmp;
 
-icmp* make_icmp(int8, int8, int8*, int16);
+//icmp
+icmp* make_icmp(type, const int8*, int16);
+int8* eval_icmp(icmp*);
+int16 checksum(int8*, int16);
+void showicmp(icmp*);
 
 
+int main(int,char**);
