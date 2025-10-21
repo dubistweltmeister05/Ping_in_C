@@ -18,6 +18,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "birchutils.h"
 
 #define packed __attribute__((packed))
 
@@ -37,22 +38,18 @@ typedef unsigned char int8;
 typedef unsigned short int int16;
 typedef unsigned int int32;
 
-cd 
+
 int main(int,char**);
-void copy(int8*,int8*,int16);
-int16 checksum(int8*,int16);
 
-/* C */
-void copy(int8*,int8*,int16);
+struct s_icmp{
+	int8 type;
+	int8 code;
+	int16 checksum;
+	int8 data[];
+};
 
-/* N */
-int16 nstoh(int16);
+typedef struct s_icmp icmp;
 
-/* P */
-void printhex(int8*,int16,int8);
+icmp* make_icmp(int8, int8, int8*, int16);
 
-/* T */
-int8 *todotted(in_addr_t);
 
-/* Z */
-void zero(int8*,int16);
